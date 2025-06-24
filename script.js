@@ -143,3 +143,9 @@ class Board {
 const board = new Board("board");
 board.draw();
 
+/*
+Tasks
+- Add All types of pieces on board both back and white
+- Improve font size and color (adjust according to background color)
+- Read svg animatation tutorial here : https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
+*/
