@@ -42,6 +42,7 @@ class Square {
 
 class Piece {
   constructor(x, y, type, color) {
+    this.element = null;
     this.x = x;
     this.y = y;
     this.type = type;
@@ -56,6 +57,14 @@ class Piece {
     piece.setAttributeNS(null, "y", this.y);
     piece.setAttributeNS(null, "width", this.size);
     piece.setAttributeNS(null, "height", this.size);
+    piece.setAttributeNS(null, "class", "piece");
+    piece.addEventListener("mousedown", (e) => {
+      e.target.setAttributeNS(null, "class", "piece draggable draging");
+    })
+     piece.addEventListener("mouseup", (e) => {
+       e.target.setAttributeNS(null, "class", "piece draggable");
+    })
+    this.element = piece;
     board.appendChild(piece);
   }
 }
@@ -142,6 +151,46 @@ class Board {
 
 const board = new Board("board");
 board.draw();
+
+
+let selectedElement = null;
+let offset = 0;
+function makeDraggable(evt) {
+  let svg = evt.target;
+  svg.addEventListener('mousedown', startDrag);
+  svg.addEventListener('mousemove', drag);
+  svg.addEventListener('mouseup', endDrag);
+  svg.addEventListener('mouseleave', endDrag);
+
+  function getMousePosition(evt) {
+    let CTM = svg.getScreenCTM();
+    return {
+      x: (evt.clientX - CTM.e) / CTM.a,
+      y: (evt.clientY - CTM.f) / CTM.d
+    };
+  }
+
+  function startDrag(evt) {
+    if (evt.target.classList.contains('draggable')) {
+      selectedElement = evt.target;
+      offset = getMousePosition(evt);
+      offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+      offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
+    }
+  }
+  function drag(evt) {
+   if (selectedElement) {
+      evt.preventDefault();
+      var coord = getMousePosition(evt);
+      selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+      selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+    }
+  }
+  function endDrag(evt) {
+    selectedElement = null;
+  }
+}
+
 
 /*
 Tasks

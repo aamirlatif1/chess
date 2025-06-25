@@ -7,8 +7,17 @@
 </head>
 <body>
 
-<svg id="board" width="900" height="900" xmlns="http://www.w3.org/2000/svg">
-  
+<svg id="board" width="900" height="900" onload="makeDraggable(evt)" xmlns="http://www.w3.org/2000/svg">
+  <style lin>
+        <![CDATA[
+          image.piece{
+            cursor: -webkit-grab;
+          }
+          image.piece.draging{
+            cursor: -webkit-grabbing;
+          }
+        ]]>
+      </style>
 </svg>
   
 <script src="script.js"></script>
