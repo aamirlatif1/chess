@@ -1,4 +1,29 @@
 
+class Square {
+  constructor(x, y, color, size = 70) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.size = size;
+    this.object = null;
+  }
+  draw(board) {
+    var cell = document.createElementNS(svgns, 'rect');
+    cell.setAttribute("width", this.size)   
+    cell.setAttribute("height", this.size)
+    cell.setAttribute("x", this.x)
+    cell.setAttribute("y", this.y)  
+    cell.setAttribute("style", "fill:"+ this.color)
+    board.appendChild(cell)
+  }
+  setColor(color) {
+    this.color = color;
+  }
+  addObject(object) {
+    this.object = object;
+  }
+}
+
 class Board {
   constructor(container) {
     this.size = 70;
@@ -13,6 +38,7 @@ class Board {
     this.#drawFileNumbers();
     this.#drawRankLetters();
     this.#initBoardSetting()
+    // this.container.addEventListener('onload', (evt) => makeDraggable(evt))
   }
 
   #drawGrid(){
@@ -93,6 +119,46 @@ class Board {
     piece.draw(this.container)
   }
 }
+var selectedElement, offset
+var boundaryX1 = 0;
+var boundaryX2 = 900;
+var boundaryY1 = 0;
+var boundaryY2 = 900;
+
+function makeDraggable(evt) {
+    var svg = evt.target;
+    svg.addEventListener('mousedown', startDrag);
+    svg.addEventListener('mousemove', drag);
+    svg.addEventListener('mouseup', endDrag);
+    svg.addEventListener('mouseleave', endDrag);
+    
+    function startDrag(evt) {
+      if (evt.target.classList.contains('dragging')) {
+        selectedElement = evt.target;
+        offset = getMousePosition(evt);
+        offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+        offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
+      }
+    }
+    function drag(evt) {
+      if (selectedElement) {
+        var coord = getMousePosition(evt)
+        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+      }
+    }
+    function endDrag(evt) {
+      selectedElement = null;
+    }
+    function getMousePosition(evt) {
+        var CTM = svg.getScreenCTM();
+        return {
+          x: (evt.clientX - CTM.e) / CTM.a,
+          y: (evt.clientY - CTM.f) / CTM.d
+        };
+      }
+  }
+
 
 const board = new Board("board");
 board.draw();
