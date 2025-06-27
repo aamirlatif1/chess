@@ -175,14 +175,14 @@ function makeDraggable(evt) {
   function endDrag(evt) {
     if(selectedElement) {
       const pt = svg.createSVGPoint();
-        pt.x = evt.clientX;
-        pt.y = evt.clientY;
-        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
-        const col = Math.floor(svgP.x / 70);
-        const row = Math.floor(svgP.y / 70);
-        let s = board.ranks[row][col];
-        selectedElement.setAttributeNS(null, "x", s.x);
-        selectedElement.setAttributeNS(null, "y", s.y);
+      pt.x = evt.clientX;
+      pt.y = evt.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      const col = Math.floor(svgP.x / 70);
+      const row = Math.floor(svgP.y / 70);
+      let s = board.ranks[row][col];
+      selectedElement.setAttributeNS(null, "x", s.x);
+      selectedElement.setAttributeNS(null, "y", s.y);
     }
     selectedElement = false;
   }
