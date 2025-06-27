@@ -26,8 +26,12 @@ class Square {
 
 class Board {
   constructor(container) {
+    this.height = 70*8;
+    this.width = 7*80;
     this.size = 70;
     this.container = document.getElementById(container);
+    this.container.setAttribute("height", this.height);
+    this.container.setAttribute("width", this.width);
     this.ranks = Array(8);
     for (let r = 0; r < 8; r++) {
       this.ranks[r] = Array(8);
@@ -119,53 +123,87 @@ class Board {
     piece.draw(this.container)
   }
 }
-var selectedElement, offset
-var boundaryX1 = 0;
-var boundaryX2 = 900;
-var boundaryY1 = 0;
-var boundaryY2 = 900;
 
 function makeDraggable(evt) {
-    var svg = evt.target;
-    svg.addEventListener('mousedown', startDrag);
-    svg.addEventListener('mousemove', drag);
-    svg.addEventListener('mouseup', endDrag);
-    svg.addEventListener('mouseleave', endDrag);
-    
-    function startDrag(evt) {
-      if (evt.target.classList.contains('dragging')) {
-        selectedElement = evt.target;
-        offset = getMousePosition(evt);
-        offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
-        offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
-      }
-    }
-    function drag(evt) {
-      if (selectedElement) {
-        var coord = getMousePosition(evt)
-        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
-        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
-      }
-    }
-    function endDrag(evt) {
-      selectedElement = null;
-    }
-    function getMousePosition(evt) {
-        var CTM = svg.getScreenCTM();
-        return {
-          x: (evt.clientX - CTM.e) / CTM.a,
-          y: (evt.clientY - CTM.f) / CTM.d
-        };
-      }
+  var svg = evt.target;
+
+  svg.addEventListener('mousedown', startDrag);
+  svg.addEventListener('mousemove', drag);
+  svg.addEventListener('mouseup', endDrag);
+  svg.addEventListener('mouseleave', endDrag);
+  svg.addEventListener('touchstart', startDrag);
+  svg.addEventListener('touchmove', drag);
+  svg.addEventListener('touchend', endDrag);
+  svg.addEventListener('touchleave', endDrag);
+  svg.addEventListener('touchcancel', endDrag);
+
+  var selectedElement, offset, transform,
+      bbox, minX, maxX, minY, maxY, confined;
+
+  var boundaryX1 = 0;
+  var boundaryX2 = 70*8;
+  var boundaryY1 = 0;
+  var boundaryY2 = 70*8;
+
+  function getMousePosition(evt) {
+    var CTM = svg.getScreenCTM();
+    if (evt.touches) { evt = evt.touches[0]; }
+    return {
+      x: (evt.clientX - CTM.e) / CTM.a,
+      y: (evt.clientY - CTM.f) / CTM.d
+    };
   }
+
+  function startDrag(evt) {
+    if (evt.target.classList.contains('dragging')) {
+      selectedElement = evt.target;
+      offset = getMousePosition(evt);
+
+      // Make sure the first transform on the element is a translate transform
+      var transforms = selectedElement.transform.baseVal;
+
+      if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+        // Create an transform that translates by (0, 0)
+        var translate = svg.createSVGTransform();
+        translate.setTranslate(0, 0);
+        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+      }
+
+      // Get initial translation
+      transform = transforms.getItem(0);
+      offset.x -= transform.matrix.e;
+      offset.y -= transform.matrix.f;
+
+      bbox = selectedElement.getBBox();
+      minX = boundaryX1 - bbox.x;
+      maxX = boundaryX2 - bbox.x - bbox.width;
+      minY = boundaryY1 - bbox.y;
+      maxY = boundaryY2 - bbox.y - bbox.height;
+    }
+  }
+
+  function drag(evt) {
+    if (selectedElement) {
+      evt.preventDefault();
+
+      var coord = getMousePosition(evt);
+      var dx = coord.x - offset.x;
+      var dy = coord.y - offset.y;
+
+      if (dx < minX) { dx = minX; }
+      else if (dx > maxX) { dx = maxX; }
+      if (dy < minY) { dy = minY; }
+      else if (dy > maxY) { dy = maxY; }
+
+      transform.setTranslate(dx, dy);
+    }
+  }
+
+  function endDrag(evt) {
+    selectedElement = false;
+  }
+}
 
 
 const board = new Board("board");
 board.draw();
-
-/*
-Tasks
-- Add All types of pieces on board both back and white
-- Improve font size and color (adjust according to background color)
-- Read svg animatation tutorial here : https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
-*/
