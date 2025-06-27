@@ -8,13 +8,13 @@ class Square {
     this.piece = null;
   }
   draw(board) {
-    var cell = document.createElementNS(svgns, 'rect');
-    cell.setAttribute("width", this.size)   
-    cell.setAttribute("height", this.size)
-    cell.setAttribute("x", this.x)
-    cell.setAttribute("y", this.y)  
-    cell.setAttribute("style", "fill:"+ this.color)
-    board.appendChild(cell)
+    var s = document.createElementNS(svgns, 'rect');
+    s.setAttribute("width", this.size)   
+    s.setAttribute("height", this.size)
+    s.setAttribute("x", this.x)
+    s.setAttribute("y", this.y)  
+    s.setAttribute("style", "fill:"+ this.color)
+    board.appendChild(s)
   }
   setColor(color) {
     this.color = color;
@@ -122,7 +122,7 @@ class Board {
   addPiece(type, color, rank, file) {
     let square = this.ranks[rank][file];
     let piece = new Piece(square.x, square.y, type, color)
-    square.setPiece(piece);
+    this.ranks[rank][file].piece = piece;
     piece.draw(this.container)
   }
 }

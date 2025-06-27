@@ -1,4 +1,9 @@
-class CellPosition {}
+class Position {
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+  }
+}
 function gameMovies(evt) {
   let svg = evt.target;
   const board = new Board("board");
@@ -15,7 +20,7 @@ function gameMovies(evt) {
   svg.addEventListener('touchcancel', endDrag);
 
   let selectedElement, offset;
-  let from;
+  let fromSquare;
 
   function getMousePosition(evt) {
     let CTM = svg.getScreenCTM();
@@ -28,7 +33,7 @@ function gameMovies(evt) {
 
   function startDrag(evt) {
     if (evt.target.classList.contains('dragging')) {
-      from = findSquare(evt);
+      fromSquare = findSquare(evt);
 
       selectedElement = evt.target;
       offset = getMousePosition(evt);
@@ -48,15 +53,20 @@ function gameMovies(evt) {
 
   function endDrag(evt) {
     if(selectedElement) {
-      let to = findSquare(evt);
-      if(to.piece !== null) {
-        to = from;
+      let toSquare = findSquare(evt);
+      let newPosition;
+
+      if(!isValidMove(board, fromSquare, toSquare)) {
+        newPosition = board.square(fromSquare.x, fromSquare.y);
       } else {
-        to.piece = selectedElement;
+        let to = board.square(toSquare.x, toSquare.y);
+        let from = board.square(fromSquare.x, fromSquare.y);
+        to.piece = from.piece;
         from.piece = null;
+        newPosition = to
       }
-      selectedElement.setAttributeNS(null, "x", to.x);
-      selectedElement.setAttributeNS(null, "y", to.y);
+      selectedElement.setAttributeNS(null, "x", newPosition.x);
+      selectedElement.setAttributeNS(null, "y", newPosition.y);
     }
     selectedElement = false;
   }
@@ -66,10 +76,23 @@ function gameMovies(evt) {
     pt.x = evt.clientX;
     pt.y = evt.clientY;
     const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
-    const col = Math.floor(svgP.x / 70);
-    const row = Math.floor(svgP.y / 70);
-    let s = board.square(row, col);
-    return s;
+    return new Position( Math.floor(svgP.y / 70), Math.floor(svgP.x / 70));
   }
+}
+
+function isValidMove(board, from, to) {
+  console.log(from, to);
+  let fromId = board.square(from.x, from.y).piece.id;
+  let color = fromId[0];
+  let type = fromId[1];
+
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+
+  const absDx = Math.abs(dx);
+  const absDy = Math.abs(dy);
+
+  const destSquare = board.square(to.x, to.y);
+  if(destSquare.piece && destSquare.piece.id[0] == color) return false;
 }
 

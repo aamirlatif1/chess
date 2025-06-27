@@ -43,6 +43,7 @@ class Piece {
     this.type = type;
     this.color = color;
     this.size = 70;
+    this.id = `${color.toString()}${type.toString()}`;
   }
 
   draw(board) {
