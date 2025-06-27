@@ -137,13 +137,13 @@ function makeDraggable(evt) {
   svg.addEventListener('touchleave', endDrag);
   svg.addEventListener('touchcancel', endDrag);
 
-  var selectedElement, offset, transform,
-      bbox, minX, maxX, minY, maxY, confined;
+  var selectedElement, offset
+  // , transform, bbox, minX, maxX, minY, maxY, confined;
 
-  var boundaryX1 = 0;
-  var boundaryX2 = 70*8;
-  var boundaryY1 = 0;
-  var boundaryY2 = 70*8;
+  // var boundaryX1 = 0;
+  // var boundaryX2 = 70*8;
+  // var boundaryY1 = 0;
+  // var boundaryY2 = 70*8;
 
   function getMousePosition(evt) {
     var CTM = svg.getScreenCTM();
@@ -158,48 +158,32 @@ function makeDraggable(evt) {
     if (evt.target.classList.contains('dragging')) {
       selectedElement = evt.target;
       offset = getMousePosition(evt);
-
-      // Make sure the first transform on the element is a translate transform
-      var transforms = selectedElement.transform.baseVal;
-
-      if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
-        // Create an transform that translates by (0, 0)
-        var translate = svg.createSVGTransform();
-        translate.setTranslate(0, 0);
-        selectedElement.transform.baseVal.insertItemBefore(translate, 0);
-      }
-
-      // Get initial translation
-      transform = transforms.getItem(0);
-      offset.x -= transform.matrix.e;
-      offset.y -= transform.matrix.f;
-
-      bbox = selectedElement.getBBox();
-      minX = boundaryX1 - bbox.x;
-      maxX = boundaryX2 - bbox.x - bbox.width;
-      minY = boundaryY1 - bbox.y;
-      maxY = boundaryY2 - bbox.y - bbox.height;
+      offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+      offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
     }
   }
 
   function drag(evt) {
     if (selectedElement) {
-      evt.preventDefault();
-
-      var coord = getMousePosition(evt);
-      var dx = coord.x - offset.x;
-      var dy = coord.y - offset.y;
-
-      if (dx < minX) { dx = minX; }
-      else if (dx > maxX) { dx = maxX; }
-      if (dy < minY) { dy = minY; }
-      else if (dy > maxY) { dy = maxY; }
-
-      transform.setTranslate(dx, dy);
+       evt.preventDefault();
+        var coord = getMousePosition(evt);
+        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
     }
   }
 
   function endDrag(evt) {
+    if(selectedElement) {
+      const pt = svg.createSVGPoint();
+        pt.x = evt.clientX;
+        pt.y = evt.clientY;
+        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const col = Math.floor(svgP.x / 70);
+        const row = Math.floor(svgP.y / 70);
+        let s = board.ranks[row][col];
+        selectedElement.setAttributeNS(null, "x", s.x);
+        selectedElement.setAttributeNS(null, "y", s.y);
+    }
     selectedElement = false;
   }
 }
