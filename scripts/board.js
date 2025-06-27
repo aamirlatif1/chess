@@ -5,7 +5,7 @@ class Square {
     this.y = y;
     this.color = color;
     this.size = size;
-    this.object = null;
+    this.piece = null;
   }
   draw(board) {
     var cell = document.createElementNS(svgns, 'rect');
@@ -19,8 +19,8 @@ class Square {
   setColor(color) {
     this.color = color;
   }
-  addObject(object) {
-    this.object = object;
+  setPiece(piece) {
+    this.piece = piece;
   }
 }
 
@@ -122,6 +122,7 @@ class Board {
   addPiece(type, color, rank, file) {
     let square = this.ranks[rank][file];
     let piece = new Piece(square.x, square.y, type, color)
+    square.setPiece(piece);
     piece.draw(this.container)
   }
 }

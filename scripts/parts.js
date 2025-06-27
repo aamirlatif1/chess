@@ -54,6 +54,7 @@ class Piece {
     piece.setAttributeNS(null, "width", this.size);
     piece.setAttributeNS(null, "height", this.size);
     piece.setAttributeNS(null, "class", "drag");
+    piece.setAttributeNS(null, "id", `${c}${t}`);
     this.#addDragListeners(piece)
     board.appendChild(piece);
   }

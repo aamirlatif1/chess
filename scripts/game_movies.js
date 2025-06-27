@@ -14,7 +14,8 @@ function gameMovies(evt) {
   svg.addEventListener('touchleave', endDrag);
   svg.addEventListener('touchcancel', endDrag);
 
-  let selectedElement, offset
+  let selectedElement, offset;
+  let from;
 
   function getMousePosition(evt) {
     let CTM = svg.getScreenCTM();
@@ -27,6 +28,8 @@ function gameMovies(evt) {
 
   function startDrag(evt) {
     if (evt.target.classList.contains('dragging')) {
+      from = findSquare(evt);
+
       selectedElement = evt.target;
       offset = getMousePosition(evt);
       offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
@@ -45,9 +48,15 @@ function gameMovies(evt) {
 
   function endDrag(evt) {
     if(selectedElement) {
-      let s = findSquare(evt);
-      selectedElement.setAttributeNS(null, "x", s.x);
-      selectedElement.setAttributeNS(null, "y", s.y);
+      let to = findSquare(evt);
+      if(to.piece !== null) {
+        to = from;
+      } else {
+        to.piece = selectedElement;
+        from.piece = null;
+      }
+      selectedElement.setAttributeNS(null, "x", to.x);
+      selectedElement.setAttributeNS(null, "y", to.y);
     }
     selectedElement = false;
   }
