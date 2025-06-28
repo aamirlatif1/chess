@@ -5,8 +5,8 @@ class Position {
   }
 }
 function gameMovies(evt) {
-  let svg = evt.target;
-  const board = new Board("board");
+  const svg = evt.target;
+  const board = new Board(svg);
   board.draw();
 
   svg.addEventListener('mousedown', startDrag);
@@ -23,7 +23,7 @@ function gameMovies(evt) {
   let fromSquare;
 
   function getMousePosition(evt) {
-    let CTM = svg.getScreenCTM();
+    const CTM = svg.getScreenCTM();
     if (evt.touches) { evt = evt.touches[0]; }
     return {
       x: (evt.clientX - CTM.e) / CTM.a,
@@ -53,7 +53,7 @@ function gameMovies(evt) {
 
   function endDrag(evt) {
     if(selectedElement) {
-      let toSquare = findSquare(evt);
+      const toSquare = findSquare(evt);
       let newPosition;
 
       if(!isValidMove(board, fromSquare, toSquare)) {
@@ -82,17 +82,11 @@ function gameMovies(evt) {
 
 function isValidMove(board, from, to) {
   console.log(from, to);
-  let fromId = board.square(from.x, from.y).piece.id;
-  let color = fromId[0];
-  let type = fromId[1];
-
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-
-  const absDx = Math.abs(dx);
-  const absDy = Math.abs(dy);
-
-  const destSquare = board.square(to.x, to.y);
-  if(destSquare.piece && destSquare.piece.id[0] == color) return false;
+  const pieceToMove = board.square(from.x, from.y).piece;
+  const destPiece = board.square(to.x, to.y).piece;
+  if(destPiece && destPiece.color == pieceToMove.color) {
+    return false;
+  } else {
+    return true;
+  }
 }
-

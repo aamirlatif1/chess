@@ -25,11 +25,11 @@ class Square {
 }
 
 class Board {
-  constructor(container) {
+  constructor(svg) {
     this.height = 70*8;
     this.width = 7*80;
     this.size = 70;
-    this.container = document.getElementById(container);
+    this.container = svg;
     this.container.setAttribute("height", this.height);
     this.container.setAttribute("width", this.width);
     this.ranks = Array(8);
