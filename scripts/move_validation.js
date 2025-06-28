@@ -1,5 +1,6 @@
 
 function isValidMove(board, from, to) {
+  if(to.row > 7 || to.row < 0 || to.col > 7 || to.col < 0 || !board.square(to.row, to.col)) return false;
   const pieceToMove = board.square(from.row, from.col).piece;
   const destPiece = board.square(to.row, to.col).piece;
  
@@ -69,14 +70,14 @@ function isClearDiagonal(board, from, to){
 function isClearStraight(board, from, to) {
   if (from.col === to.col){
     const step = from.row < to.row ? 1 : -1;
-    for (let r = from.row + step; r !== to.row; r+= step) {
+    for (let r = Math.max(from.row + step, 0); r !== to.row; r+= step) {
       if (board.square(r, from.col).piece) return false;
     }
     return true;
   }
   if (from.row === to.row) {
     const step = from.col < to.col ? 1 : -1;
-    for (let c = from.col + step; c !== to.col; c+= step) {
+    for (let c = Math.max(from.col + step); c !== to.col; c+= step) {
       if (board.square(from.row, c).piece) return false;
     }
     return true;
