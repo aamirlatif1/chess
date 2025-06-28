@@ -10,7 +10,15 @@ function isValidMove(board, from, to) {
      validMove = isClearDiagonal(board, from, to);
   } else if (pieceToMove.type == PieceType.ROOK){
     validMove = isClearStraight(board, from, to);
+  } else if (pieceToMove.type == PieceType.QUEEN) {
+    validMove = isClearDiagonal(board, from, to) || isClearStraight(board, from, to)
+  } else if (pieceToMove.type == PieceType.KNIGHT) {
+    validMove = isValidKnightMove(from, to)
+  } else if (pieceToMove.type == PieceType.KING) {
+    validMove = isValidKingMove(from, to)
   }
+
+  // check not capturing own piece
   if(validMove && (!destPiece || destPiece.color !== pieceToMove.color)){
     return true;
   }
@@ -74,4 +82,22 @@ function isClearStraight(board, from, to) {
     return true;
   }
   return false
+}
+function isValidKnightMove(from, to) {
+  const rowDiff = to.row - from.row;
+  const colDiff = to.col - from.col;
+
+  const absColDiff = Math.abs(colDiff);
+  const absRowDiff = Math.abs(rowDiff);
+
+  return (absColDiff === 2 && absRowDiff === 1) || (absColDiff === 1 && absRowDiff === 2);
+}
+function isValidKingMove(from, to) {
+  const rowDiff = to.row - from.row;
+  const colDiff = to.col - from.col;
+
+  const absColDiff = Math.abs(colDiff);
+  const absRowDiff = Math.abs(rowDiff);
+
+  return (absColDiff <= 1 && absRowDiff <= 1)
 }
