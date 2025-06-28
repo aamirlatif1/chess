@@ -7,6 +7,7 @@ class Position {
 function gameMovies(evt) {
   const svg = evt.target;
   const board = new Board(svg);
+  const display = document.getElementById("coords");
   board.draw();
 
   svg.addEventListener('mousedown', startDrag);
@@ -46,8 +47,11 @@ function gameMovies(evt) {
     if (selectedElement) {
        evt.preventDefault();
         let coord = getMousePosition(evt);
-        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
-        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+        let dx = coord.x - offset.x;
+        let dy = coord.y - offset.y
+        display.innerHTML = `${dx}, ${dy}`;
+        selectedElement.setAttributeNS(null, "x", dx);
+        selectedElement.setAttributeNS(null, "y", dy);
     }
   }
 
