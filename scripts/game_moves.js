@@ -4,10 +4,11 @@ class Position {
     this.y = y;
   }
 }
-function gameMovies(evt) {
+function gameMoves(evt) {
   const svg = evt.target;
   const board = new Board(svg);
-  const display = document.getElementById("coords");
+  const maxX = 490, maxY = 490, minX = 0, minY = 0
+  
   board.draw();
 
   svg.addEventListener('mousedown', startDrag);
@@ -49,7 +50,10 @@ function gameMovies(evt) {
         let coord = getMousePosition(evt);
         let dx = coord.x - offset.x;
         let dy = coord.y - offset.y
-        display.innerHTML = `${dx}, ${dy}`;
+        if (dx > maxX) dx = maxX
+        if (dx < minX) dx = minX
+        if (dy > maxY) dy = maxY
+        if (dy < minY) dy = minY
         selectedElement.setAttributeNS(null, "x", dx);
         selectedElement.setAttributeNS(null, "y", dy);
     }
@@ -94,3 +98,7 @@ function isValidMove(board, from, to) {
     return true;
   }
 }
+
+
+// piece boundry check.
+// basic move validation.
