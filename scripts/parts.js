@@ -43,6 +43,7 @@ class Piece {
     this.type = type;
     this.color = color;
     this.size = 70;
+    this.element = null;
     this.id = `${color.toString()}${type.toString()}`;
   }
 
@@ -56,6 +57,7 @@ class Piece {
     piece.setAttributeNS(null, "height", this.size);
     piece.setAttributeNS(null, "class", "drag");
     piece.setAttributeNS(null, "id", `${c}${t}`);
+    this.element = piece;
     this.#addDragListeners(piece)
     board.appendChild(piece);
   }

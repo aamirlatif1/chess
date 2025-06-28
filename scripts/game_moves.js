@@ -69,6 +69,9 @@ function gameMoves(evt) {
       } else {
         let toSquare = board.square(toPos.row, toPos.col);
         let fromSquare = board.square(fromPos.row, fromPos.col);
+        if(toSquare.piece){
+          toSquare.piece.element.remove();
+        }
         toSquare.piece = fromSquare.piece;
         fromSquare.piece = null;
         destSquare = toSquare
