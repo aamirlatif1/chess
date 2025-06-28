@@ -51,10 +51,10 @@ class Board {
 
   #drawGrid(){
     let count = 0;
-    for (let row = 0; row < this.ranks.length; row++) {
-      for (let cols = 0; cols < this.ranks[row].length; cols++) {
-        let square = new Square((this.size)*cols, (this.size)*row, blackColor)
-        if(cols == 0)
+    for (let x = 0; x < this.ranks.length; x++) {
+      for (let y = 0; y < this.ranks[x].length; y++) {
+        let square = new Square((this.size)*y, (this.size)*x, blackColor)
+        if(y == 0)
           count++
         if(count % 2 == 0)
           square.setColor(blackColor)
@@ -62,7 +62,7 @@ class Board {
           square.setColor(whiteColor)
         count++
         square.draw(this.container)
-        this.ranks[row][cols] = square;
+        this.ranks[x][y] = square;
       }
     }
   }
@@ -115,6 +115,7 @@ class Board {
     for (let file = 0; file < this.ranks.length; file++) {
       this.addPiece(PieceType.PAWN, PieceColor.BLACK, 1, file);
     }
+    
     for (let file = 0; file < this.ranks.length; file++) {
       this.addPiece(backrank[file], PieceColor.WHITE, 7, file)
     }
