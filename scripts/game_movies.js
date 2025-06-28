@@ -21,7 +21,7 @@ function gameMovies(evt) {
   svg.addEventListener('touchcancel', endDrag);
 
   let selectedElement, offset;
-  let fromSquare;
+  let fromPos;
 
   function getMousePosition(evt) {
     const CTM = svg.getScreenCTM();
@@ -34,7 +34,7 @@ function gameMovies(evt) {
 
   function startDrag(evt) {
     if (evt.target.classList.contains('dragging')) {
-      fromSquare = findSquare(evt);
+      fromPos = findSquarePos(evt);
 
       selectedElement = evt.target;
       offset = getMousePosition(evt);
@@ -57,25 +57,25 @@ function gameMovies(evt) {
 
   function endDrag(evt) {
     if(selectedElement) {
-      const toSquare = findSquare(evt);
-      let newPosition;
+      const toPos = findSquarePos(evt);
+      let destSquare;
 
-      if(!isValidMove(board, fromSquare, toSquare)) {
-        newPosition = board.square(fromSquare.x, fromSquare.y);
+      if(!isValidMove(board, fromPos, toPos)) {
+        destSquare = board.square(fromPos.x, fromPos.y);
       } else {
-        let to = board.square(toSquare.x, toSquare.y);
-        let from = board.square(fromSquare.x, fromSquare.y);
-        to.piece = from.piece;
-        from.piece = null;
-        newPosition = to
+        let toSquare = board.square(toPos.x, toPos.y);
+        let fromSquare = board.square(fromPos.x, fromPos.y);
+        toSquare.piece = fromSquare.piece;
+        fromSquare.piece = null;
+        destSquare = toSquare
       }
-      selectedElement.setAttributeNS(null, "x", newPosition.x);
-      selectedElement.setAttributeNS(null, "y", newPosition.y);
+      selectedElement.setAttributeNS(null, "x", destSquare.x);
+      selectedElement.setAttributeNS(null, "y", destSquare.y);
     }
     selectedElement = false;
   }
 
-  function findSquare(evt) {
+  function findSquarePos(evt) {
     const pt = svg.createSVGPoint();
     pt.x = evt.clientX;
     pt.y = evt.clientY;

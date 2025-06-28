@@ -1,4 +1,5 @@
-
+const blackColor = "#5d9948";
+const whiteColor = "#eee"
 class Square {
   constructor(x, y, color, size = 70) {
     this.x = x;
@@ -52,13 +53,13 @@ class Board {
     let count = 0;
     for (let row = 0; row < this.ranks.length; row++) {
       for (let cols = 0; cols < this.ranks[row].length; cols++) {
-        let square = new Square((this.size)*cols, (this.size)*row, "#5d9948")
+        let square = new Square((this.size)*cols, (this.size)*row, blackColor)
         if(cols == 0)
           count++
         if(count % 2 == 0)
-          square.setColor("#5d9948")
+          square.setColor(blackColor)
         else 
-          square.setColor("#eee")
+          square.setColor(whiteColor)
         count++
         square.draw(this.container)
         this.ranks[row][cols] = square;
@@ -70,10 +71,10 @@ class Board {
     let count = 0
     for (let row = 0; row < 8; row++) {
       if(count % 2 == 0){
-        this.color = "#5d9948"
+        this.color = blackColor
         
       } else {
-        this.color = "#eee"
+        this.color = whiteColor
       }
       count++
       let te = new TextElement(5, row*this.size+15, 8-row, this.color);
@@ -86,9 +87,9 @@ class Board {
     let count = 0
     for (let col = 0; col < 8; col++) {
       if(count % 2 == 0) {
-          this.color = "#eee"
+          this.color = whiteColor;
       } else {
-          this.color = "#5d9948"
+          this.color = blackColor;
       }
         count++
       let te = new TextElement(this.size*col+this.size-10, this.size*8-5, letters[col], this.color);
@@ -106,9 +107,11 @@ class Board {
       PieceType.KNIGHT,
       PieceType.ROOK,
     ]
+    // white pawn row
     for (let file = 0; file < this.ranks.length; file++) {
       this.addPiece(PieceType.PAWN, PieceColor.WHITE, 6, file);
     }
+     // black pawn row
     for (let file = 0; file < this.ranks.length; file++) {
       this.addPiece(PieceType.PAWN, PieceColor.BLACK, 1, file);
     }
