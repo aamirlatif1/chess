@@ -1,7 +1,7 @@
 class Position {
   constructor(x, y){
-    this.x = x;
-    this.y = y;
+    this.row = x;
+    this.col = y;
   }
 }
 function gameMoves(evt) {
@@ -65,10 +65,10 @@ function gameMoves(evt) {
       let destSquare;
 
       if(!isValidMove(board, fromPos, toPos)) {
-        destSquare = board.square(fromPos.x, fromPos.y);
+        destSquare = board.square(fromPos.row, fromPos.col);
       } else {
-        let toSquare = board.square(toPos.x, toPos.y);
-        let fromSquare = board.square(fromPos.x, fromPos.y);
+        let toSquare = board.square(toPos.row, toPos.col);
+        let fromSquare = board.square(fromPos.row, fromPos.col);
         toSquare.piece = fromSquare.piece;
         fromSquare.piece = null;
         destSquare = toSquare
