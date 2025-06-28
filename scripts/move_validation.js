@@ -1,8 +1,9 @@
 
-function isValidMove(board, from, to) {
+function isValidMove(board, from, to, turn) {
   if(to.row > 7 || to.row < 0 || to.col > 7 || to.col < 0 || !board.square(to.row, to.col)) return false;
   const pieceToMove = board.square(from.row, from.col).piece;
   const destPiece = board.square(to.row, to.col).piece;
+  if (pieceToMove.color !== turn) return false;
  
   let validMove = false;
   if (pieceToMove.type == PieceType.PAWN) {
@@ -85,20 +86,12 @@ function isClearStraight(board, from, to) {
   return false
 }
 function isValidKnightMove(from, to) {
-  const rowDiff = to.row - from.row;
-  const colDiff = to.col - from.col;
-
-  const absColDiff = Math.abs(colDiff);
-  const absRowDiff = Math.abs(rowDiff);
-
+  const absColDiff = Math.abs((to.col - from.col));
+  const absRowDiff = Math.abs((to.row - from.row));
   return (absColDiff === 2 && absRowDiff === 1) || (absColDiff === 1 && absRowDiff === 2);
 }
 function isValidKingMove(from, to) {
-  const rowDiff = to.row - from.row;
-  const colDiff = to.col - from.col;
-
-  const absColDiff = Math.abs(colDiff);
-  const absRowDiff = Math.abs(rowDiff);
-
+  const absColDiff = Math.abs((to.col - from.col));
+  const absRowDiff = Math.abs((to.row - from.row));
   return (absColDiff <= 1 && absRowDiff <= 1)
 }

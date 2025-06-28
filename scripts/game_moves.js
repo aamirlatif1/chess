@@ -7,7 +7,8 @@ class Position {
 function gameMoves(evt) {
   const svg = evt.target;
   const board = new Board(svg);
-  const maxX = 490, maxY = 490, minX = 0, minY = 0
+  const maxX = 490, maxY = 490, minX = 0, minY = 0;
+  let turn = PieceColor.WHITE;
   
   board.draw();
 
@@ -64,7 +65,7 @@ function gameMoves(evt) {
       const toPos = findSquarePos(evt);
       let destSquare;
 
-      if(!isValidMove(board, fromPos, toPos)) {
+      if(!isValidMove(board, fromPos, toPos, turn)) {
         destSquare = board.square(fromPos.row, fromPos.col);
       } else {
         let toSquare = board.square(toPos.row, toPos.col);
@@ -75,6 +76,7 @@ function gameMoves(evt) {
         toSquare.piece = fromSquare.piece;
         fromSquare.piece = null;
         destSquare = toSquare
+        turn = turn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
       }
       selectedElement.setAttributeNS(null, "x", destSquare.x);
       selectedElement.setAttributeNS(null, "y", destSquare.y);
