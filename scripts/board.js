@@ -1,11 +1,14 @@
 const blackColor = "#5d9948";
 const whiteColor = "#eee"
+const whiteSelected = "rgba(255, 255, 0, .35)"
+const blackSelected = "rgba(255, 255, 0, .5)"
 class Square {
   constructor(x, y, color, size = 70) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.size = size;
+    this.element = null;
     this.piece = null;
   }
   draw(board) {
@@ -15,7 +18,11 @@ class Square {
     s.setAttribute("x", this.x)
     s.setAttribute("y", this.y)  
     s.setAttribute("style", "fill:"+ this.color)
+    this.element = s
     board.appendChild(s)
+  }
+  resetColor() {
+    this.element.setAttribute("style", "fill:"+ this.color)
   }
   setColor(color) {
     this.color = color;
