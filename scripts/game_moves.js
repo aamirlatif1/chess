@@ -3,9 +3,6 @@ class Position {
     this.row = x;
     this.col = y;
   }
-  isSame(pos) {
-    return this.row == pos.row && this.col == pos.col;
-  }
 }
 function gameMoves(evt) {
   const svg = evt.target;
@@ -19,9 +16,13 @@ function gameMoves(evt) {
   svg.addEventListener('mousemove', drag);
   svg.addEventListener('mouseup', endDrag);
   svg.addEventListener('mouseleave', endDrag);
-  svg.addEventListener('click', moveByClick)
+  svg.addEventListener('touchstart', startDrag);
+  svg.addEventListener('touchmove', drag);
+  svg.addEventListener('touchend', endDrag);
+  svg.addEventListener('touchleave', endDrag);
+  svg.addEventListener('touchcancel', endDrag);
 
-  let selectedElement, offset, prePos;
+  let selectedElement, offset;
   let fromPos;
 
   function getMousePosition(evt) {
@@ -31,36 +32,6 @@ function gameMoves(evt) {
       x: (evt.clientX - CTM.e) / CTM.a,
       y: (evt.clientY - CTM.f) / CTM.d
     };
-  }
-
-  function moveByClick(evt) {
-    let currPos = findSquarePos(evt)
-    if (prePos) {
-      board.square(prePos.row, prePos.col).resetColor();
-      if (prePos.isSame(currPos)) {
-        prePos = null
-        return
-      } else {
-        if(isValidMove(board, prePos, currPos, turn)) {
-          let destSquare = calMove(prePos, currPos)
-          p = board.square(currPos.row, currPos.col).piece.element;
-          p.setAttributeNS(null, "x", destSquare.x);
-          p.setAttributeNS(null, "y", destSquare.y);
-          prePos = null;
-          return;
-        }
-      }
-    }
-    let square = board.square(currPos.row, currPos.col)
-    prePos = currPos
-    if (square.piece) {
-      if (square.color == blackColor){
-        square.element.setAttribute("style", "fill:"+ blackSelected)
-      } else {
-        square.element.setAttribute("style", "fill:"+ whiteSelected)
-      }
-    }
-    
   }
 
   function startDrag(evt) {
@@ -93,27 +64,24 @@ function gameMoves(evt) {
     if(selectedElement) {
       const toPos = findSquarePos(evt);
       let destSquare;
+
       if(!isValidMove(board, fromPos, toPos, turn)) {
         destSquare = board.square(fromPos.row, fromPos.col);
       } else {
-        destSquare = calMove(fromPos, toPos);
+        let toSquare = board.square(toPos.row, toPos.col);
+        let fromSquare = board.square(fromPos.row, fromPos.col);
+        if(toSquare.piece){
+          toSquare.piece.element.remove();
+        }
+        toSquare.piece = fromSquare.piece;
+        fromSquare.piece = null;
+        destSquare = toSquare
+        turn = turn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
       }
       selectedElement.setAttributeNS(null, "x", destSquare.x);
       selectedElement.setAttributeNS(null, "y", destSquare.y);
     }
     selectedElement = false;
-  }
-
-  function calMove(fromPos, toPos) {
-    let toSquare = board.square(toPos.row, toPos.col);
-    let fromSquare = board.square(fromPos.row, fromPos.col);
-    if(toSquare.piece){
-      toSquare.piece.element.remove();
-    }
-    toSquare.piece = fromSquare.piece;
-    fromSquare.piece = null;
-    turn = turn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-    return toSquare
   }
 
   function findSquarePos(evt) {
