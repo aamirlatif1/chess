@@ -16,11 +16,6 @@ function gameMoves(evt) {
   svg.addEventListener('mousemove', drag);
   svg.addEventListener('mouseup', endDrag);
   svg.addEventListener('mouseleave', endDrag);
-  svg.addEventListener('touchstart', startDrag);
-  svg.addEventListener('touchmove', drag);
-  svg.addEventListener('touchend', endDrag);
-  svg.addEventListener('touchleave', endDrag);
-  svg.addEventListener('touchcancel', endDrag);
 
   let selectedElement, offset;
   let fromPos;
