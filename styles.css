@@ -1,0 +1,65 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("https://cdn.pixabay.com/photo/2012/04/10/16/57/checkerboard-26400_1280.png");
+  color: #333;
+}
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+.titel {
+  background-color: #1100f8;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.images {
+  height: auto;
+  width: 50%;
+}
+
+.section {
+  background-color: rgb(216, 216, 216);
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 15px auto;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.button {
+  display: inline-block;
+  background-color: #3498db;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}

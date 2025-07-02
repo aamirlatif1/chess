@@ -1,26 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Chess</title>
+  <title>Chess Tutorial</title>
+  <link rel="stylesheet" href="styles.css">
+  <a href="chessboard.html" class="button">Hier Klicken um das ganze selbst an einem Schachbrett zu versuchen</a>
+
 </head>
 <body>
+  <h1 class="titel">Schach spielen lernen</h1>
 
-<svg id="board" xmlns="http://www.w3.org/2000/svg" onload="gameMoves(evt)">
-  <style>
-    image.drag {
-      cursor: -webkit-grab;
-    }
-    image.dragging {
-      cursor: -webkit-grabbing;
-    }
-  </style>
-</svg>
- 
-<script src="scripts/parts.js"></script>
-<script src="scripts/board.js"></script>
-<script src="scripts/game_moves.js"></script>
-<script src="scripts/move_validation.js"></script>
+  <div class="section">
+    <h2>Gliederung</h2>
+    <p></p>
+    <a href="#1">Das Schachbrett</a><br>
+    <a href="#2">Wie Figuren sich bewegen</a><br>
+    <a href="#3">Einfache Regeln</a><br>
+    <a href="#4">Schacheröffnungen</a><br>
+    <a href="#5">Berühmte Schachspieler</a><br>
+  </div>
+
+  <div class="section">
+    <h2>1. Intro</h2>
+    <p>Schach ist ein Strategiespiel für zwei Spieler, das auf einem 8x8-Brett gespielt wird. Jeder Spieler kontrolliert eine Armee aus 16 Figuren und das Ziel ist es, den gegnerischen König schachmatt zu setzen.</p>
+  </div>
+
+  <div class="section" id="1">
+    <h2>2. Das Schachbrett</h2>
+    <p>Das Brett besteht aus 64 Spielern. Hier ist eine Ausgangsposition:</p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/AAA_SVG_Chessboard_and_chess_pieces_06.svg/2048px-AAA_SVG_Chessboard_and_chess_pieces_06.svg.png" alt="Chessboard" class="images">
+  </div>
+
+  <div class="section" id="2">
+    <h2>3. Wie Figuren sich bewegen</h2>
+    <ul>
+      <li><strong>Bauer</strong> bewegt sich ein Feld vorwärts, schlägt aber diagonal.</li>
+      <li><strong>Türm</strong> bewegt sich horizontal oder vertikal in geraden Linien.</li>
+      <li><strong>Springer</strong> bewegt sich in L-Form: zwei Quadrate in eine Richtung und dann eines senkrecht dazu.</li>
+      <li><strong>Läufer</strong> bewegt sich diagolal.</li>
+      <li><strong>Dame</strong> vereint die Kraft von Turm und Läufer.</li>
+      <li><strong>König</strong> bewegt sich ein Feld in jede beliebige Richtung.</li> 
+    </ul>
+  </div>
+
+  <div class="section" id="3">
+    <h2>4. Einfache Regeln</h2>
+    <p>
+      Schachmatt beendet das Spiel.<br>
+      Ein Remis kann durch Patt, Zugwiederholung oder Materialmangel entstehen.<br>
+      <a href="https://de.wikipedia.org/wiki/En_passant">En passant</a> und <a href="https://de.wikipedia.org/wiki/Rochade#:~:text=Die%20Rochade%20%5Br%C9%94%CB%88x%C9%91%CB%90d%C9%99%2C%20auch%20r%C9%94%CB%88%CA%83%C9%91%CB%90d%C9%99,zwei%20Figuren%20zugleich%20bewegt%20werden.">Rochade</a> sind Spezialzüge, die du im Laufe der Zeit lernst.
+    </p>
+  </div>
+
+
+  <h1 class="titel">Fortgeschritten</h1>
+
+
+  <div class="section" id="4">
+    <h2>1. Schacheröffnungen</h2>
+    <p>
+      <h3>1. Duras-Gambit</h3><br>
+      <p><strong>Züge:</strong> 1.e4 e5 2.d4 exd4 3.Dxd4 Nc6 4.De3</p>
+      <p>
+        Ein seltenes Gambit, benannt nach dem tschechischen Meister Oldřich Duras.<br>
+        Weiß gibt früh das Zentrum auf, um aktives Figurenspiel zu entwickeln.
+      </p>
+    </p>
+    <p>
+      <h3>2. Sizilianische Verteidigung</h3><br>
+      <p><strong>Züge:</strong> 1.e4 c5</p>
+      <p>Die beliebteste Erwiderung auf 1.e4 – sehr dynamisch, ideal für Konterspieler.</p>
+    </p>
+  </div>
+
+  <div class="section" id="5">
+    <h2>2. Berühmte Schachspieler</h2>
+    <p>
+      <h3>1. Magnus Carlsen</h3><br>
+      <p>Norwegischer Großmeister, Weltmeister von 2013 bis 2023, bekannt für sein positionelles Verständnis und Endspielstärke.</p>
+      <img src="https://images.chesscomfiles.com/uploads/v1/master_player/3b0ddf4e-bd82-11e8-9421-af517c2ebfed.f2dc9e34.5000x5000o.41b400498a4b.png" alt="Magnus" class="images">
+    </p>
+    <p>
+      <h3>2. Bobby Fischer</h3><br>
+      <p>US-amerikanisches Schachgenie, Weltmeister 1972. Revolutionierte das moderne Schach mit seinem tiefen Eröffnungsvorbereitungen.</p>
+      <img src="https://worldchesshof.org/wp-content/uploads/2025/02/BobbyFischer400x400_7.jpg" alt="Bobby Fischer" class="images">
+    </p>
+    <h3>3. Oldřich Duras</h3>
+    <p>
+      <p>Starker tschechischer Meister aus dem frühen 20. Jahrhundert, Namensgeber des selten gespielten Duras-Gambits.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Old%C5%99ich_Duras.JPG" alt="Bobby Fischer" class="images">
+    </p>
+  </div>
+
+
 </body>
 </html>

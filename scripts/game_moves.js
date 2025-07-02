@@ -1,3 +1,5 @@
+const turnDisplay = document.getElementById("turn");
+
 class Position {
   constructor(x, y){
     this.row = x;
@@ -28,6 +30,13 @@ function gameMoves(evt) {
       y: (evt.clientY - CTM.f) / CTM.d
     };
   }
+  function updateTurnDisplay() {
+  if (turnDisplay) {
+    turnDisplay.textContent = `${turn === PieceColor.WHITE ? "Weiß" : "Schwarz"} am Zug`;
+    }
+  }
+  updateTurnDisplay()
+
 
   function startDrag(evt) {
     if (evt.target.classList.contains('dragging')) {
@@ -72,6 +81,7 @@ function gameMoves(evt) {
         fromSquare.piece = null;
         destSquare = toSquare
         turn = turn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+        updateTurnDisplay()
       }
       selectedElement.setAttributeNS(null, "x", destSquare.x);
       selectedElement.setAttributeNS(null, "y", destSquare.y);

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Chess</title>
+  <link rel="stylesheet" href="styleforchess.css">
+  <a href="index.html" class="button">Zurück</a>
+</head>
+<body>
+
+<svg id="board" xmlns="http://www.w3.org/2000/svg" onload="gameMoves(evt)">
+  <style>
+    image.drag {
+      cursor: -webkit-grab;
+    }
+    image.dragging {
+      cursor: -webkit-grabbing;
+    }
+  </style>
+</svg>
+<p id="turn">Weiß am Zug</p>
+ 
+<script src="scripts/parts.js"></script>
+<script src="scripts/board.js"></script>
+<script src="scripts/game_moves.js"></script>
+<script src="scripts/move_validation.js"></script>
+</body>
+</html>
